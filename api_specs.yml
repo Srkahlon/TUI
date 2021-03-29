@@ -1,0 +1,39 @@
+swagger: "2.0"
+info:
+  title: TUI Backend API
+  description: API to get the repository details basis on user name.
+  version: 1.0.0
+basePath: /tui.api/v1
+schemes:
+  - http
+paths:
+  /repositoryDetails:
+    post:
+      summary: Returns the repositoryDetails for a given github user name.
+      description: It returns the repositories, its owner login and all the branches in it, plus the last commit SHA.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Github username for which we need the repository details.
+        required: true
+        schema:
+          type: "object"
+          required:
+          - userName
+          properties:
+            userName:
+              type: "string"
+              example: "simran"
+      responses:
+        404:
+          description: "Missing required field UserName/UserName not found on GitHub."
+        406:
+          description: "Invalid acccept headers, only JSON is allowed."
+        500:
+          description: "Exception Occured!"
+        200:
+          description: "OK"

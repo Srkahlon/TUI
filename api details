@@ -1,0 +1,10 @@
+-- curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/users/Srkahlon/repos
+It returns all the repo names
+
+-- curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/users/Srkahlon
+It returns all the owner related details
+
+-- curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/Srkahlon/webimages/branches
+It returns all the branches and last commit SHA
+
+https://api.github.com/users/csdcsdcsd/repos
