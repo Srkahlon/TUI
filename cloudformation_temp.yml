@@ -6,7 +6,5 @@ Resources:
       RepositoryName: "tui-backend"
 Outputs:
   RepoName:
-    Value: !Ref "ECRRepository"
-    Export:
-      Name: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/{ECRRepository}"
+    Value: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/{ECRRepository}"
     Description: Repository Name
