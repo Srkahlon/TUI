@@ -3,8 +3,10 @@ Resources:
   ECRRepository:
     Type: AWS::ECR::Repository
     Properties: 
-    RepositoryName: "tui-backend"
+      RepositoryName: "tui-backend"
 Outputs:
   RepoName:
     Value: !Ref "ECRRepository"
+    Export:
+      Name: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/{ECRRepository}"
     Description: Repository Name
