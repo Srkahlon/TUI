@@ -7,4 +7,6 @@ Resources:
 Outputs:
   RepoName:
     Value: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/{ECRRepository}"
+    Export:
+      Name: 'RepoName'
     Description: Repository Name
