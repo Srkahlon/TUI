@@ -23,14 +23,14 @@
         "Properties": {
           "RepositoryName" : "tui-backend"
         }
-    },
-    "Outputs": {
-      "RepoName": {
-          "Value": {
-              "Ref": "ECRRepository"
-          },
-          "Description": "Name of the sample ECR."
-      }
-  }
+    }
+  },
+  "Outputs": {
+    "RepoName": {
+        "Value": {
+            "Ref": "ECRRepository"
+        },
+        "Description": "Name of the sample ECR."
+    }
   }
 }
