@@ -30,7 +30,7 @@
         "Value": {
             "Ref": "ECRRepository"
         },
-        "Description": "Name of the sample ECR"
+        "Description": "Name of the sample ECR."
     }
   }
 }
