@@ -30,6 +30,11 @@
         "Value": {
             "Ref": "ECRRepository"
         },
+        "Export" : {
+          "Name" : {
+            "Fn::Sub" : "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/{ECRRepository}"
+          }
+        },
         "Description": "Name of the sample ECR."
     }
   }
