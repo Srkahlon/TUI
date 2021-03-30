@@ -1,0 +1,10 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  ECRRepository:
+    Type: AWS::ECR::Repository
+    Properties: 
+    RepositoryName: "tui-backend"
+Outputs:
+  RepoName:
+    Value: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/{ECRRepository}"
+    Description: Repository Name
