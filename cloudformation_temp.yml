@@ -111,7 +111,7 @@ Resources:
   #Creating the Service
   Service:
     Type: AWS::ECS::Service
-    DependsOn: LoadBalancerRule
+    #DependsOn: LoadBalancerRule
     Properties:
       ServiceName: !Ref 'ServiceName'
       Cluster: !Ref 'ClusterName'
