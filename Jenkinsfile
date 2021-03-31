@@ -51,7 +51,7 @@ pipeline {
                     )
                     {
                         def myImage = docker.build("${ECR_REPO_NAME}")
-                        myImage.push("tui")
+                        myImage.push("latest")
                     }
                 }
             }
