@@ -37,6 +37,33 @@ Resources:
     Type: AWS::ECS::Cluster
     Properties: 
       ClusterName: "tui-cluster"
+  # This is a role which is used by the ECS tasks themselves.
+  ECSTaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: [ecs-tasks.amazonaws.com]
+          Action: ['sts:AssumeRole']
+      Path: /
+      Policies:
+        - PolicyName: AmazonECSTaskExecutionRolePolicy
+          PolicyDocument:
+            Statement:
+            - Effect: Allow
+              Action:
+                # Allow the ECS Tasks to download images from ECR
+                - 'ecr:GetAuthorizationToken'
+                - 'ecr:BatchCheckLayerAvailability'
+                - 'ecr:GetDownloadUrlForLayer'
+                - 'ecr:BatchGetImage'
+
+                # Allow the ECS tasks to upload logs to CloudWatch
+                - 'logs:CreateLogStream'
+                - 'logs:PutLogEvents'
+              Resource: '*'
   #Creating the task definition
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
@@ -47,9 +74,7 @@ Resources:
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
-      # ExecutionRoleArn:
-      #   Fn::ImportValue:
-      #     !Join [':', [!Ref 'StackName', 'ECSTaskExecutionRole']]
+      ExecutionRoleArn: !Ref 'ECSTaskExecutionRole'
       # TaskRoleArn:
       #   Fn::If:
       #     - 'HasCustomRole'
