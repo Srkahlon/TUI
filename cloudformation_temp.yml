@@ -26,8 +26,6 @@ Parameters:
     Description: memory to be given to each container
   ImageURL:
     Type: String
-    Default: ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/{ECRRepository}
-    Description: Image URL
 Resources:
   #Creating the ECR Repository
   ECRRepository:
