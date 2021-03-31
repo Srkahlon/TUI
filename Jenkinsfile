@@ -26,23 +26,23 @@ pipeline {
                 }
             }
         }
-        stage('Create Stack if not found') {
+        stage('Create Stack if not found.') {
             steps {
                 script
                 {
                     if(stack_exists == "false")
                     {
                         sh "aws cloudformation create-stack --stack-name ecs-stack --template-body file://cloudformation_temp.yml --region 'us-east-1' --parameters  ParameterKey=ImageURL,ParameterValue='${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${ECR_REPO_NAME}' --capabilities CAPABILITY_NAMED_IAM"
+                        sleep time: 60000, unit: 'MILLISECONDS'
                     }
                     else
                     {
-                        echo "stack already exists, not need to create one"
+                        echo "stack already exists, not need to create one."
                     }
-                    sleep time: 60000, unit: 'MILLISECONDS'
                 }
             }
         }
-        stage('Build') {
+        stage('Push Image') {
             steps {
                 script {
                     docker.withRegistry(
