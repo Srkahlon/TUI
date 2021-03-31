@@ -33,6 +33,13 @@ Resources:
     Type: AWS::ECR::Repository
     Properties: 
       RepositoryName: !Ref 'RepositoryName'
+Outputs:
+  RepoName:
+    Value: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/{ECRRepository}"
+    Export:
+      Name: 'RepoName'
+    Description: Repository Name
+Resources:
   #Creating the ECS Cluster
   ECSCluster:
     Type: AWS::ECS::Cluster
@@ -63,9 +70,3 @@ Resources:
           Image: !ImportValue 'RepoName'
           PortMappings:
             - ContainerPort: !Ref 'ContainerPort'
-Outputs:
-  RepoName:
-    Value: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/{ECRRepository}"
-    Export:
-      Name: 'RepoName'
-    Description: Repository Name
