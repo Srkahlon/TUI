@@ -39,8 +39,8 @@ Parameters:
   ImageURL:
     Type: String
   SecurityGroup:
-    Type: String
-    Default: sg-08ab5079ccecb9909
+    Type: CommaDelimitedList
+    Default: ['sg-08ab5079ccecb9909']
   Subnet1:
     Type: String
     Default: subnet-82cf59c9
@@ -116,9 +116,9 @@ Resources:
       ServiceName: !Ref 'ServiceName'
       Cluster: !Ref 'ClusterName'
       LaunchType: FARGATE
-      # DeploymentConfiguration:
-      #   MaximumPercent: 200
-      #   MinimumHealthyPercent: 75
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 75
       DesiredCount: !Ref 'DesiredCount'
       NetworkConfiguration:
         AwsvpcConfiguration:
