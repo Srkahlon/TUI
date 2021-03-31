@@ -53,7 +53,7 @@ Resources:
         - Name: !Ref 'ContainerName'
           Cpu: !Ref 'ContainerCpu'
           Memory: !Ref 'ContainerMemory'
-          Image: !Ref 'RepoName'
+          Image: !Ref 'ECRRepository'
           PortMappings:
             - ContainerPort: !Ref 'ContainerPort'
 Outputs:
