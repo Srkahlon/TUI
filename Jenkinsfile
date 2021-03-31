@@ -13,13 +13,13 @@ pipeline {
         }
         stage('Build') {
             steps {
-                bat  'docker build -t tui .'
+                sh  "docker build -t tui ."
             }
         }
         stage('Push image') {
          steps {
            withDockerRegistry([url: "https://${ACCOUNT_ID}.dkr.ecr.ap-southeast-2.amazonaws.com/${ECR_REPO_NAME}",credentialsId: "ecr:${REGION}:aws_creds"]) {
-                    bat 'docker push tui:latest'
+                    sh "docker push tui:latest"
                 }
             }
         }
