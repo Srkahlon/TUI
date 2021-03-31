@@ -14,7 +14,7 @@ pipeline {
                     try
                     {
                         instanceInfo = sh (
-                                script: "aws cloudformation describe-stacks --stack-name  ecs-tack --region 'us-east-1' --query 'Stacks[0].StackStatus' --output text",
+                                script: "aws cloudformation describe-stacks --stack-name  ecs-stack --region 'us-east-1' --query 'Stacks[0].StackStatus' --output text",
                                 returnStdout: true
                         ).trim()
                         stack_exists = "true"
