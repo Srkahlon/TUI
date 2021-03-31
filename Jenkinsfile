@@ -9,7 +9,12 @@ pipeline {
         stage('Submit Stack') {
             steps {
                 //sh "aws cloudformation create-stack --stack-name ecs-stack --template-body file://cloudformation_temp.yml --region 'us-east-1' --parameters  ParameterKey=ImageURL,ParameterValue='${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${ECR_REPO_NAME}' --capabilities CAPABILITY_NAMED_IAM"
-                sh "aws cloudformation describe-stacks --stack-name  ecs-stack --region 'us-east-1' --output text"
+                instanceInfo = sh (
+                            script: "aws cloudformation describe-stacks --stack-name  ecs-stack --region 'us-east-1' --output text"
+                            returnStdout: true
+                    ).trim()
+                echo "the instance info is printed below"
+                echo ${instanceInfo}
             }
         }
         // stage('Build') {
