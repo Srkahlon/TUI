@@ -38,6 +38,15 @@ Parameters:
     Description: Desired count for the tasks
   ImageURL:
     Type: String
+  SecurityGroup:
+    Type: String
+    Default: sg-08ab5079ccecb9909
+  Subnet1:
+    Type: String
+    Default: subnet-82cf59c9
+  Subnet2:
+    Type: String
+    Default: subnet-c0badea4
 Resources:
   #Creating the ECR Repository
   ECRRepository:
@@ -111,17 +120,13 @@ Resources:
         MaximumPercent: 200
         MinimumHealthyPercent: 75
       DesiredCount: !Ref 'DesiredCount'
-      # NetworkConfiguration:
-      #   AwsvpcConfiguration:
-      #     AssignPublicIp: ENABLED
-      #     SecurityGroups:
-      #       - Fn::ImportValue:
-      #           !Join [':', [!Ref 'StackName', 'FargateContainerSecurityGroup']]
-      #     Subnets:
-      #       - Fn::ImportValue:
-      #           !Join [':', [!Ref 'StackName', 'PublicSubnetOne']]
-      #       - Fn::ImportValue:
-      #           !Join [':', [!Ref 'StackName', 'PublicSubnetTwo']]
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups: !Ref 'SecurityGroup'
+          Subnets:
+            - !Ref 'Subnet1'
+            - !Ref 'Subnet2'
       TaskDefinition: !Ref 'TaskDefinition'
       # LoadBalancers:
       #   - ContainerName: !Ref 'ServiceName'
