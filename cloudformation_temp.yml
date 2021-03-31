@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Parameters:
   RepositoryName:
     Type: String
-    Default: tui-backend-task
+    Default: tui-backend
     Description: Name for the task
   TaskName:
     Type: String
@@ -24,6 +24,14 @@ Parameters:
     Type: Number
     Default: 512
     Description: memory to be given to each container
+  ClusterName:
+    Type: String
+    Default: "tui-backend-cluster"
+    Description: Cluster Name
+  DesiredCount:
+    Type: Number
+    Default: 0
+    Description: Desired count for the tasks
   ImageURL:
     Type: String
 Resources:
@@ -36,7 +44,7 @@ Resources:
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties: 
-      ClusterName: "tui-cluster"
+      ClusterName: Ref! 'ClusterName'
   # This is a role which is used by the ECS tasks themselves.
   ECSTaskExecutionRole:
     Type: AWS::IAM::Role
@@ -87,6 +95,34 @@ Resources:
           Image: !Ref 'ImageURL'
           PortMappings:
             - ContainerPort: !Ref 'ContainerPort'
+  #Creating the Service
+  Service:
+    Type: AWS::ECS::Service
+    DependsOn: LoadBalancerRule
+    Properties:
+      ServiceName: !Ref 'ServiceName'
+      Cluster: !Ref 'ClusterName'
+      LaunchType: FARGATE
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 75
+      DesiredCount: !Ref 'DesiredCount'
+      # NetworkConfiguration:
+      #   AwsvpcConfiguration:
+      #     AssignPublicIp: ENABLED
+      #     SecurityGroups:
+      #       - Fn::ImportValue:
+      #           !Join [':', [!Ref 'StackName', 'FargateContainerSecurityGroup']]
+      #     Subnets:
+      #       - Fn::ImportValue:
+      #           !Join [':', [!Ref 'StackName', 'PublicSubnetOne']]
+      #       - Fn::ImportValue:
+      #           !Join [':', [!Ref 'StackName', 'PublicSubnetTwo']]
+      TaskDefinition: !Ref 'TaskDefinition'
+      # LoadBalancers:
+      #   - ContainerName: !Ref 'ServiceName'
+      #     ContainerPort: !Ref 'ContainerPort'
+      #     TargetGroupArn: !Ref 'TargetGroup'
 Outputs:
   RepoName:
     Value: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/{ECRRepository}"
