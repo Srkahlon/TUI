@@ -28,6 +28,10 @@ Parameters:
     Type: String
     Default: "tui-backend-cluster"
     Description: Cluster Name
+  ServiceName:
+    Type: String
+    Default: "tui-backend-service"
+    Description: Service Name
   DesiredCount:
     Type: Number
     Default: 0
@@ -98,7 +102,7 @@ Resources:
   #Creating the Service
   Service:
     Type: AWS::ECS::Service
-    DependsOn: LoadBalancerRule
+    #DependsOn: LoadBalancerRule
     Properties:
       ServiceName: !Ref 'ServiceName'
       Cluster: !Ref 'ClusterName'
