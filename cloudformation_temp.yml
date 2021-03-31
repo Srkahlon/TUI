@@ -4,6 +4,10 @@ Resources:
     Type: AWS::ECR::Repository
     Properties: 
       RepositoryName: "tui-backend"
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties: 
+      ClusterName: "tui-cluster"
 Outputs:
   RepoName:
     Value: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/{ECRRepository}"
