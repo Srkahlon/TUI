@@ -19,7 +19,8 @@ pipeline {
         stage('Push image') {
          steps {
            withDockerRegistry([url: "https://${ACCOUNT_ID}.dkr.ecr.ap-southeast-2.amazonaws.com/${ECR_REPO_NAME}",credentialsId: "ecr:${REGION}:aws_creds"]) {
-           bat 'docker push tui:latest'
+                    bat 'docker push tui:latest'
+                }
             }
         }
         stage('Deploy') {
