@@ -1,13 +1,61 @@
 AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  TaskName:
+    Type: String
+    Default: tui-backend-task
+    Description: Name for the task
+  ContainerName:
+    Type: String
+    Default: tui-backend-container
+    Description: Name for the container
+  ContainerPort:
+    Type: Number
+    Default: 8080
+    Description: Port on which the application will run inside the container
+  ContainerCpu:
+    Type: Number
+    Default: 256
+    Description: CPU to be given to each container
+  ContainerMemory:
+    Type: Number
+    Default: 512
+    Description: memory to be given to each container
 Resources:
+  #Creating the ECR Repository
   ECRRepository:
     Type: AWS::ECR::Repository
     Properties: 
       RepositoryName: "tui-backend"
+  #Creating the ECS Cluster
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties: 
       ClusterName: "tui-cluster"
+  #Creating the task definition
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Ref 'TaskName'
+      Cpu: !Ref 'ContainerCpu'
+      Memory: !Ref 'ContainerMemory'
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      # ExecutionRoleArn:
+      #   Fn::ImportValue:
+      #     !Join [':', [!Ref 'StackName', 'ECSTaskExecutionRole']]
+      # TaskRoleArn:
+      #   Fn::If:
+      #     - 'HasCustomRole'
+      #     - !Ref 'Role'
+      #     - !Ref "AWS::NoValue"
+      ContainerDefinitions:
+        - Name: !Ref 'ContainerName'
+          Cpu: !Ref 'ContainerCpu'
+          Memory: !Ref 'ContainerMemory'
+          Image: !Ref 'RepoName'
+          PortMappings:
+            - ContainerPort: !Ref 'ContainerPort'
 Outputs:
   RepoName:
     Value: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/{ECRRepository}"
