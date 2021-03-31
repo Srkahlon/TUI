@@ -38,9 +38,9 @@ Parameters:
     Description: Desired count for the tasks
   ImageURL:
     Type: String
-  SecurityGroup:
-    Type: CommaDelimitedList
-    Default: ['sg-08ab5079ccecb9909']
+  # SecurityGroup:
+  #   Type: List<AWS::EC2::SecurityGroup::Id>
+  #   Default: ['sg-08ab5079ccecb9909']
   Subnet1:
     Type: String
     Default: subnet-82cf59c9
@@ -123,7 +123,7 @@ Resources:
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: ENABLED
-          SecurityGroups: !Ref 'SecurityGroup'
+          SecurityGroups: ['sg-08ab5079ccecb9909']
           Subnets:
             - !Ref 'Subnet1'
             - !Ref 'Subnet2'
