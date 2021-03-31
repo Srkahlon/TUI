@@ -14,7 +14,7 @@ pipeline {
                             returnStdout: true
                     ).trim()
                 echo "the instance info is printed below"
-                echo ${instanceInfo}
+                echo "${instanceInfo}"
             }
         }
         // stage('Build') {
