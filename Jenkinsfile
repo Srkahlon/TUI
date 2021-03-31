@@ -12,20 +12,15 @@ pipeline {
             }
         }
         stage('Build') {
-            steps {
-                sh  "docker build -t tui ."
-            }
-        }
-        stage('Push image') {
-         steps {
-           withDockerRegistry([url: "https://${ACCOUNT_ID}.dkr.ecr.ap-southeast-2.amazonaws.com/${ECR_REPO_NAME}",credentialsId: "ecr:${REGION}:aws_creds"]) {
-                    sh "docker push tui:latest"
+            script {
+                docker.withRegistry(
+                    "https://${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${ECR_REPO_NAME}",
+                    "ecr:${REGION}:aws_creds"
+                )
+                {
+                    def myImage = docker.build("${ECR_REPO_NAME}")
+                    myImage.push("tui")
                 }
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
             }
         }
     }
