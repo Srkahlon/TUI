@@ -53,6 +53,7 @@ pipeline {
                         def myImage = docker.build("${ECR_REPO_NAME}")
                         myImage.push("latest")
                     }
+                    sh "aws ecs update-service --service tui-backend-service --cluster tui-backend-cluster --desired-count 1 --force-new-deployment --region 'us-east-1'"
                 }
             }
         }
