@@ -6,6 +6,10 @@ pipeline {
         ECR_REPO_NAME = 'tui-backend'
     }
     stages {
+        stage('Initialize'){
+            def dockerHome = tool 'myDocker'
+            env.PATH = "${dockerHome}/bin:${env.PATH}"
+        }
         stage('Submit Stack') {
             steps {
                 sh "aws cloudformation create-stack --stack-name ecrrepository --template-body file://cloudformation_temp.yml --region 'us-east-1'"
