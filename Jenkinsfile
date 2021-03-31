@@ -1,3 +1,4 @@
+def stack_exists = "false"
 pipeline {
     agent any
     environment {
@@ -6,17 +7,37 @@ pipeline {
         ECR_REPO_NAME = 'tui-backend'
     }
     stages {
-        stage('Submit Stack') {
+        stage('Check if stack exists') {
             steps {
                 script
                 {
-                    //sh "aws cloudformation create-stack --stack-name ecs-stack --template-body file://cloudformation_temp.yml --region 'us-east-1' --parameters  ParameterKey=ImageURL,ParameterValue='${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${ECR_REPO_NAME}' --capabilities CAPABILITY_NAMED_IAM"
-                    instanceInfo = sh (
+                    try
+                    {
+                        instanceInfo = sh (
                                 script: "aws cloudformation describe-stacks --stack-name  ecs-tack --region 'us-east-1' --query 'Stacks[0].StackStatus' --output text",
                                 returnStdout: true
                         ).trim()
-                    echo "the instance info is printed below"
-                    echo "${instanceInfo}"
+                        stack_exists = "true"
+                    }
+                    catch(Exception e)
+                    {
+                        echo "Stack Doesnt exist."
+                    }
+                }
+            }
+        }
+        stage('Create Stack if not found') {
+            steps {
+                script
+                {
+                    if(stack_exists == "false")
+                    {
+                        sh "aws cloudformation create-stack --stack-name ecs-stack --template-body file://cloudformation_temp.yml --region 'us-east-1' --parameters  ParameterKey=ImageURL,ParameterValue='${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${ECR_REPO_NAME}' --capabilities CAPABILITY_NAMED_IAM"
+                    }
+                    else
+                    {
+                        echo "stack already exists, not need to create one"
+                    }
                 }
             }
         }
