@@ -48,7 +48,7 @@ Resources:
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties: 
-      ClusterName: Ref! 'ClusterName'
+      ClusterName: !Ref 'ClusterName'
   # This is a role which is used by the ECS tasks themselves.
   ECSTaskExecutionRole:
     Type: AWS::IAM::Role
