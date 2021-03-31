@@ -12,14 +12,16 @@ pipeline {
             }
         }
         stage('Build') {
-            script {
-                docker.withRegistry(
-                    "https://${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${ECR_REPO_NAME}",
-                    "ecr:${REGION}:aws_creds"
-                )
-                {
-                    def myImage = docker.build("${ECR_REPO_NAME}")
-                    myImage.push("tui")
+            steps {
+                script {
+                    docker.withRegistry(
+                        "https://${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${ECR_REPO_NAME}",
+                        "ecr:${REGION}:aws_creds"
+                    )
+                    {
+                        def myImage = docker.build("${ECR_REPO_NAME}")
+                        myImage.push("tui")
+                    }
                 }
             }
         }
