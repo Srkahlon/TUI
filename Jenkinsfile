@@ -38,22 +38,23 @@ pipeline {
                     {
                         echo "stack already exists, not need to create one"
                     }
+                    sleep time: 60000, unit: 'MILLISECONDS'
                 }
             }
         }
-        // stage('Build') {
-        //     steps {
-        //         script {
-        //             docker.withRegistry(
-        //                 "https://${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${ECR_REPO_NAME}",
-        //                 "ecr:${REGION}:aws_creds"
-        //             )
-        //             {
-        //                 def myImage = docker.build("${ECR_REPO_NAME}")
-        //                 myImage.push("tui")
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Build') {
+            steps {
+                script {
+                    docker.withRegistry(
+                        "https://${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${ECR_REPO_NAME}",
+                        "ecr:${REGION}:aws_creds"
+                    )
+                    {
+                        def myImage = docker.build("${ECR_REPO_NAME}")
+                        myImage.push("tui")
+                    }
+                }
+            }
+        }
     }
 }
