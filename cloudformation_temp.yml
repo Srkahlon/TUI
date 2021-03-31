@@ -111,14 +111,14 @@ Resources:
   #Creating the Service
   Service:
     Type: AWS::ECS::Service
-    #DependsOn: LoadBalancerRule
+    DependsOn: LoadBalancerRule
     Properties:
       ServiceName: !Ref 'ServiceName'
       Cluster: !Ref 'ClusterName'
       LaunchType: FARGATE
-      DeploymentConfiguration:
-        MaximumPercent: 200
-        MinimumHealthyPercent: 75
+      # DeploymentConfiguration:
+      #   MaximumPercent: 200
+      #   MinimumHealthyPercent: 75
       DesiredCount: !Ref 'DesiredCount'
       NetworkConfiguration:
         AwsvpcConfiguration:
