@@ -24,6 +24,9 @@ Parameters:
     Type: Number
     Default: 512
     Description: memory to be given to each container
+  # ImageURL:
+  #   Type: String
+  #   Default: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/{ECRRepository}"
 Resources:
   #Creating the ECR Repository
   ECRRepository:
@@ -57,7 +60,7 @@ Resources:
         - Name: !Ref 'ContainerName'
           Cpu: !Ref 'ContainerCpu'
           Memory: !Ref 'ContainerMemory'
-          Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/{ECRRepository}"
+          Image: !ImportValue 'RepoName'
           PortMappings:
             - ContainerPort: !Ref 'ContainerPort'
 Outputs:
