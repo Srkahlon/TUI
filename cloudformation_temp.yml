@@ -1,5 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Parameters:
+  RepositoryName:
+    Type: String
+    Default: tui-backend-task
+    Description: Name for the task
   TaskName:
     Type: String
     Default: tui-backend-task
@@ -25,7 +29,7 @@ Resources:
   ECRRepository:
     Type: AWS::ECR::Repository
     Properties: 
-      RepositoryName: "tui-backend"
+      RepositoryName: !Ref 'RepositoryName'
   #Creating the ECS Cluster
   ECSCluster:
     Type: AWS::ECS::Cluster
@@ -53,7 +57,7 @@ Resources:
         - Name: !Ref 'ContainerName'
           Cpu: !Ref 'ContainerCpu'
           Memory: !Ref 'ContainerMemory'
-          Image: !Ref 'ECRRepository'
+          Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/{ECRRepository}"
           PortMappings:
             - ContainerPort: !Ref 'ContainerPort'
 Outputs:
