@@ -1,4 +1,4 @@
-def stack_exists = "false"
+def STACK_EXISTS = "false"
 def STACK_NAME = "tui-ecs-stack"
 def ECR_REPO_NAME = "tui-backend"
 def TASK_NAME = "tui-backend-task" 
@@ -39,7 +39,7 @@ pipeline {
                                 script: "aws cloudformation describe-stacks --stack-name  ${STACK_NAME} --region '${REGION}' --query 'Stacks[0].StackStatus' --output text",
                                 returnStdout: true
                         ).trim()
-                        stack_exists = "true"
+                        STACK_EXISTS = "true"
                     }
                     catch(Exception e)
                     {
@@ -48,13 +48,13 @@ pipeline {
                 }
             }
         }
-        //This step checks the value of "stack_exists" variable and accordingly decides whether stack needs to be created or not.
+        //This step checks the value of "STACK_EXISTS" variable and accordingly decides whether stack needs to be created or not.
         stage('Create Stack') {
             steps {
                 script
                 {
                     //Stack not found, so create stack.
-                    if(stack_exists == "false")
+                    if(STACK_EXISTS == "false")
                     {
                         sh "aws cloudformation create-stack --stack-name ${STACK_NAME} --template-body ${TEMPLATE_LOCATION} --region '${REGION}' --parameters  ParameterKey=RepositoryName,ParameterValue=${ECR_REPO_NAME} ParameterKey=TaskName,ParameterValue=${TASK_NAME} ParameterKey=ServiceName,ParameterValue=${ECS_SERVICE} ParameterKey=ContainerName,ParameterValue=${CONTAINER_NAME} ParameterKey=ContainerPort,ParameterValue=${CONTAINER_PORT} ParameterKey=ContainerCpu,ParameterValue=${CONTAINER_CPU} ParameterKey=ContainerMemory,ParameterValue=${CONTAINER_MEMORY} ParameterKey=ClusterName,ParameterValue=${CLUSTER_NAME} ParameterKey=SecurityGroup,ParameterValue=${SECURITY_GROUP} ParameterKey=Subnet1,ParameterValue=${SUBNET1} ParameterKey=Subnet2,ParameterValue=${SUBNET2} ParameterKey=Priority,ParameterValue=${PRIORITY} ParameterKey=Path,ParameterValue=${PATH} ParameterKey=VPCID,ParameterValue=${VPCID} ParameterKey=RestAPI,ParameterValue=${REST_API} ParameterKey=MethodRoute,ParameterValue=${METHOD_ROUTE} ParameterKey=ImageURL,ParameterValue='${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${ECR_REPO_NAME}' --capabilities CAPABILITY_NAMED_IAM"
                         //Introducted a delay of 4 minutes for the stack to get created and then build and push the docker image.
