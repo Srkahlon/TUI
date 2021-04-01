@@ -39,7 +39,7 @@ pipeline {
                     {
                         //Describe-stacks will return the status of the stack if its found, else it will throw exception.
                         instanceInfo = sh (
-                                script: "aws cloudformation describe-stacks --stack-name  ${STACK_NAME} --region 'us-east-1' --query 'Stacks[0].StackStatus' --output text",
+                                script: "aws cloudformation describe-stacks --stack-name  ${STACK_NAME} --region '${REGION}' --query 'Stacks[0].StackStatus' --output text",
                                 returnStdout: true
                         ).trim()
                         stack_exists = "true"
