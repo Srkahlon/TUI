@@ -16,7 +16,7 @@ pipeline {
         CONTAINER_MEMORY = 512
         CLUSTER_NAME = "tui-backend-cluster"
         DESIRED_COUNT = 1
-        SECURITY_GROUP =  ['sg-08ab5079ccecb9909']
+        SECURITY_GROUP =  '['sg-08ab5079ccecb9909']'
         SUBNET1 = "subnet-82cf59c9"
         SUBNET2 = "subnet-c0badea4"
         PRIORITY = 1
