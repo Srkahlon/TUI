@@ -49,7 +49,7 @@ class RepositoryController {
                 };
                 res.status(200).send({
                     status : 200,
-                    Message_Post_Update: response
+                    Message: response
                 });
             }
             else
