@@ -221,7 +221,7 @@ Resources:
       Integration:
         IntegrationHttpMethod: POST
         Type: HTTP_PROXY
-        Uri: !GetAtt PublicLoadBalancer.DNSName
+        Uri: !Join ["", ['http://', !GetAtt PublicLoadBalancer.DNSName]]
   Deployment: 
     Type: AWS::ApiGateway::Deployment
     DependsOn: [RestApi,Method]
