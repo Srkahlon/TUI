@@ -1,33 +1,30 @@
-//Variable to check the status of the stack
 def stack_exists = "false"
-def getSecurityGroup(){
-  return ['sg-08ab5079ccecb9909']
-}
+def STACK_NAME = "tui-ecs-stack"
+def ECR_REPO_NAME = "tui-backend"
+def TASK_NAME = "tui-backend-task" 
+def ECS_SERVICE = "tui-backend-service"
+def CONTAINER_NAME = "tui-backend-container"
+def CONTAINER_PORT = 8080
+def CONTAINER_CPU = 256
+def CONTAINER_MEMORY = 512
+def CLUSTER_NAME = "tui-backend-cluster"
+def DESIRED_COUNT = 1
+def SECURITY_GROUP = ['sg-08ab5079ccecb9909']
+def SUBNET1 = "subnet-82cf59c9"
+def SUBNET2 = "subnet-c0badea4"
+def PRIORITY = 1
+def PATH = "*"
+def VPCID = "vpc-2293055a"
+def REST_API = "tui-backend-api"
+def METHOD_ROUTE = "/tui.api/v1/repositoryDetails"
+def TEMPLATE_LOCATION = "file://cloudformation_template.yml"
+
 pipeline {
     agent any
     environment {
         //Add the account id of the AWS Account from "Manage credentials" in Jenkins
         ACCOUNT_ID = credentials('account_id')
         REGION = "us-east-1"
-        STACK_NAME = "tui-ecs-stack"
-        ECR_REPO_NAME = "tui-backend"
-        TASK_NAME = "tui-backend-task" 
-        ECS_SERVICE = "tui-backend-service"
-        CONTAINER_NAME = "tui-backend-container"
-        CONTAINER_PORT = 8080
-        CONTAINER_CPU = 256
-        CONTAINER_MEMORY = 512
-        CLUSTER_NAME = "tui-backend-cluster"
-        DESIRED_COUNT = 1
-        SECURITY_GROUP =  getSecurityGroup()
-        SUBNET1 = "subnet-82cf59c9"
-        SUBNET2 = "subnet-c0badea4"
-        PRIORITY = 1
-        PATH = "*"
-        VPCID = "vpc-2293055a"
-        REST_API = "tui-backend-api"
-        METHOD_ROUTE = "/tui.api/v1/repositoryDetails"
-        TEMPLATE_LOCATION = "file://cloudformation_template.yml"
     }
     stages {
         //Stage that checks if the stack already exists in AWS
