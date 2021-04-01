@@ -9,7 +9,7 @@ schemes:
 paths:
   /repositoryDetails:
     post:
-      summary: Returns the repositoryDetails for a given github user name.
+      summary: Returns the repository details for a given github user name.
       description: It returns the repositories, its owner login and all the branches in it, plus the last commit SHA.
       consumes:
       - application/json

@@ -2,19 +2,15 @@ AWSTemplateFormatVersion: '2010-09-09'
 Parameters:
   RepositoryName:
     Type: String
-    Default: tui-backend
     Description: Name for the task
   TaskName:
     Type: String
-    Default: tui-backend-task
     Description: Name for the task
   ContainerName:
     Type: String
-    Default: tui-backend-container
     Description: Name for the container
   ContainerPort:
     Type: Number
-    Default: 8080
     Description: Port on which the application will run inside the container
   ContainerCpu:
     Type: Number
@@ -26,11 +22,9 @@ Parameters:
     Description: memory to be given to each container
   ClusterName:
     Type: String
-    Default: "tui-backend-cluster"
     Description: Cluster Name
   ServiceName:
     Type: String
-    Default: "tui-backend-service"
     Description: Service Name
   DesiredCount:
     Type: Number
@@ -38,9 +32,8 @@ Parameters:
     Description: Desired count for the tasks
   ImageURL:
     Type: String
-  # SecurityGroup:
-  #   Type: List<AWS::EC2::SecurityGroup::Id>
-  #   Default: ['sg-08ab5079ccecb9909']
+  SecurityGroup:
+    Type: List<AWS::EC2::SecurityGroup::Id>
   Subnet1:
     Type: String
     Default: subnet-82cf59c9
@@ -55,6 +48,16 @@ Parameters:
     Type: String
     Default: "*"
     Description: Path on the LB
+  VPCID:
+    Type: String
+    Default: "vpc-2293055a"
+    Description: The default VPC
+  RestAPI:
+    Type: String
+    Description: The name of the rest API
+  MethodRoute:
+    Type: String
+    Description: The Route for the rest API
 Resources:
   #Creating the ECR Repository
   ECRRepository:
@@ -83,13 +86,10 @@ Resources:
             Statement:
             - Effect: Allow
               Action:
-                # Allow the ECS Tasks to download images from ECR
                 - 'ecr:GetAuthorizationToken'
                 - 'ecr:BatchCheckLayerAvailability'
                 - 'ecr:GetDownloadUrlForLayer'
                 - 'ecr:BatchGetImage'
-
-                # Allow the ECS tasks to upload logs to CloudWatch
                 - 'logs:CreateLogStream'
                 - 'logs:PutLogEvents'
               Resource: '*'
@@ -122,7 +122,7 @@ Resources:
       Subnets:
         - !Ref 'Subnet1'
         - !Ref 'Subnet2'
-      SecurityGroups: ['sg-08ab5079ccecb9909']
+      SecurityGroups: !Ref SecurityGroup
   # A dummy target group is used to setup the ALB to just drop traffic
   # initially, before any real service target groups have been added.
   DummyTargetGroupPublic:
@@ -137,7 +137,8 @@ Resources:
       Port: 80
       Protocol: HTTP
       UnhealthyThresholdCount: 2
-      VpcId: vpc-2293055a
+      VpcId: !Ref VPCID
+  # Creating the load balancer listener
   PublicLoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     DependsOn:
@@ -165,7 +166,7 @@ Resources:
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: ENABLED
-          SecurityGroups: ['sg-08ab5079ccecb9909']
+          SecurityGroups: !Ref SecurityGroup
           Subnets:
             - !Ref 'Subnet1'
             - !Ref 'Subnet2'
@@ -187,8 +188,7 @@ Resources:
       Port: 80
       Protocol: HTTP
       UnhealthyThresholdCount: 2
-      VpcId: vpc-2293055a
-
+      VpcId: !Ref VPCID
   # Create a rule on the load balancer for routing traffic to the target group
   LoadBalancerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -201,11 +201,11 @@ Resources:
           Values: [!Ref 'Path']
       ListenerArn: !Ref 'PublicLoadBalancerListener'
       Priority: !Ref 'Priority'
-  #Create the rest API    
+  #Create the rest API
   RestApi:
     Type: AWS::ApiGateway::RestApi
     Properties: 
-      Name: "tui-api"
+      Name: !Ref RestAPI
       EndpointConfiguration:
         Types:
           - REGIONAL
@@ -220,22 +220,23 @@ Resources:
       Integration:
         IntegrationHttpMethod: POST
         Type: HTTP_PROXY
-        Uri: !Join ["", ['http://', !GetAtt PublicLoadBalancer.DNSName,'/tui.api/v1/repositoryDetails']]
+        Uri: !Join ["", ['http://', !GetAtt PublicLoadBalancer.DNSName,!Ref MethodRoute]]
   Deployment: 
     Type: AWS::ApiGateway::Deployment
     DependsOn: [RestApi,Method]
     Properties: 
       RestApiId: !Ref RestApi
-      Description: "My deployment"
+      Description: "Rest API deployment"
       StageName: "DummyStage"
   Stage: 
     Type: AWS::ApiGateway::Stage
     DependsOn: Deployment 
     Properties:
-      StageName: Prod
-      Description: Prod Stage
+      StageName: dev
+      Description: development stage
       RestApiId: !Ref RestApi
       DeploymentId: !Ref Deployment
+#Outputs
 Outputs:
   RepoName:
     Value: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/{ECRRepository}"

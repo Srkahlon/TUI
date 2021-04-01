@@ -7,7 +7,8 @@ COPY package.json .
 RUN npm install
 # Copy all other source code to work directory
 ADD . /usr/src/app
-# Start
-CMD [ "npm", "start" ]
 # Expose the port
 EXPOSE 8080
+# Start
+CMD [ "npm", "start" ]
+

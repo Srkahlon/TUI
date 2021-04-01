@@ -17,7 +17,7 @@ export class Routes{
             RepositoryController.getRepositoryDetails,
         ]);
         this.app.get(`/`,[
-            RepositoryController.commonMethod
+            RepositoryController.checkHealth
         ]);
         return this.app;
     }

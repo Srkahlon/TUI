@@ -8,8 +8,8 @@ class RepositoryController {
         'Accept': 'application/vnd.github.v3+json'
     }
 
-    //Get the repository details for the username
-    commonMethod = async(req: express.Request, res: express.Response)=> {
+    //Method for load balancer health checks
+    checkHealth = async(req: express.Request, res: express.Response)=> {
         try
         {
             res.status(200).send();
@@ -113,7 +113,7 @@ class RepositoryController {
             return null;
         }
     }
-    //Formats the branch response.
+    //Format's the branch response.
     async formatBranchesResponse(branches:Array<any>)
     {
         try
