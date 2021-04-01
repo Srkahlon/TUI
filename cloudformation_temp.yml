@@ -184,7 +184,7 @@ Resources:
       HealthyThresholdCount: 2
       TargetType: ip
       Name: !Ref 'ServiceName'
-      Port: !Ref 'ContainerPort'
+      Port: 80
       Protocol: HTTP
       UnhealthyThresholdCount: 2
       VpcId: vpc-2293055a
