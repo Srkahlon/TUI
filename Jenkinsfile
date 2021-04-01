@@ -1,5 +1,8 @@
 //Variable to check the status of the stack
 def stack_exists = "false"
+def getSecurityGroup(){
+  return ['sg-08ab5079ccecb9909']
+}
 pipeline {
     agent any
     environment {
@@ -16,7 +19,7 @@ pipeline {
         CONTAINER_MEMORY = 512
         CLUSTER_NAME = "tui-backend-cluster"
         DESIRED_COUNT = 1
-        SECURITY_GROUP =  '['sg-08ab5079ccecb9909']'
+        SECURITY_GROUP =  getSecurityGroup()
         SUBNET1 = "subnet-82cf59c9"
         SUBNET2 = "subnet-c0badea4"
         PRIORITY = 1
