@@ -134,7 +134,7 @@ Resources:
       HealthCheckTimeoutSeconds: 5
       HealthyThresholdCount: 2
       Name: !Join ['-', [!Ref 'AWS::StackName', 'drop-1']]
-      Port: 8080
+      Port: 80
       Protocol: HTTP
       UnhealthyThresholdCount: 2
       VpcId: vpc-2293055a
@@ -147,7 +147,7 @@ Resources:
         - TargetGroupArn: !Ref 'DummyTargetGroupPublic'
           Type: 'forward'
       LoadBalancerArn: !Ref 'PublicLoadBalancer'
-      Port: 8080
+      Port: 80
       Protocol: HTTP
   #Creating the Service
   Service:
