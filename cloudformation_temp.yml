@@ -51,6 +51,10 @@ Parameters:
     Type: Number
     Default: 1
     Description: Priority for the listener rule
+  Path:
+    Type: String
+    Default: "*"
+    Description: Path on the LB
 Resources:
   #Creating the ECR Repository
   ECRRepository:
@@ -193,7 +197,7 @@ Resources:
           Type: 'forward'
       Conditions:
         - Field: path-pattern
-          Values: /
+          Values: [!Ref 'Path']
       ListenerArn: !Ref 'PublicLoadBalancerListener'
       Priority: !Ref 'Priority'
 Outputs:
