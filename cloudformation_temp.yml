@@ -221,7 +221,7 @@ Resources:
       Integration:
         IntegrationHttpMethod: POST
         Type: HTTP_PROXY
-        Uri: !Join ["", ['http://', !GetAtt PublicLoadBalancer.DNSName]]
+        Uri: !Join ["", ['http://', !GetAtt PublicLoadBalancer.DNSName,'tui.api/v1/repositoryDetails']]
   Deployment: 
     Type: AWS::ApiGateway::Deployment
     DependsOn: [RestApi,Method]
