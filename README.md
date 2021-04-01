@@ -23,9 +23,9 @@ npm test
 
 ## Folder Structure
 
-- The entry point of the application is the index.js file
+- The entry point of the application is the index.ts file
 - All other files are present in the src folder
-- The config folder inside src contains configuration-related files globals.js.
-- The controllers folder contains, repositoryController.js that contains the business logic to get the required repository details for the given userName.
-- The routes are present in the src/routes/apiRoutes.js
-- The middleware folder contains the repositoryMiddlerware.js, that has functions to check the incoming request headers and body
+- The config folder inside src contains configuration-related files globals.ts.
+- The controllers folder contains, repositoryController.ts that contains the business logic to get the required repository details for the given userName.
+- The routes are present in the src/routes/apiRoutes.ts
+- The middleware folder contains the repositoryMiddlerware.ts, that has functions to check the incoming request headers and body
