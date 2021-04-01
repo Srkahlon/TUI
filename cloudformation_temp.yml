@@ -201,6 +201,42 @@ Resources:
           Values: [!Ref 'Path']
       ListenerArn: !Ref 'PublicLoadBalancerListener'
       Priority: !Ref 'Priority'
+  #Create the rest API    
+  RestApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties: 
+      Name: "tui-api"
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+  Method:
+    Type: AWS::ApiGateway::Method
+    DependsOn: [PublicLoadBalancer,RestApi]
+    Properties:
+      HttpMethod: POST
+      OperationName: /repositoryDetails
+      ResourceId: !GetAtt RestApi.RootResourceId
+      RestApiId: !Ref RestApi
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: HTTP_PROXY
+        Uri: !GetAtt PublicLoadBalancer.DNSName
+  Deployment: 
+    Type: AWS::ApiGateway::Deployment
+    DependsOn: [RestApi,Method]
+    Properties: 
+      RestApiId: !Ref RestApi
+      Description: "My deployment"
+      StageName: "DummyStage"
+  Stage: 
+    Type: AWS::ApiGateway::Stage
+    DependsOn: Deployment 
+    Properties:
+      StageName: Prod
+      Description: Prod Stage
+      RestApiId: !Ref RestApi
+      DeploymentId: !Ref Deployment
 Outputs:
   RepoName:
     Value: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/{ECRRepository}"
