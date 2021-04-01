@@ -5,3 +5,4 @@
    - CloudBees AWS Credentials Plugin
    - Amazon ECR plugin
    - Docker plugin
+5. Existing VPC, Subnets and Security Groups are used.

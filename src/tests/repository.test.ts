@@ -5,18 +5,18 @@ describe("Repository", () => {
 
     it("should check if valid invalid header is given", async () => {
       const response:any = await request(app)
-      .post("/repositoryDetails")
+      .post("/tui.api/v1/repositoryDetails")
       .set({ Accept: 'application/xml' })
       .send({
         userName: "Srkahlon"
       });
       expect(response.statusCode).toBe(406);
-      expect(response.body.Message).toEqual("Invalid headers, only JSON is allowed.");
+      expect(response.body.Message).toEqual("Invalid Accept headers, only JSON is allowed.");
     });
 
     it("should check if userName is given", async () => {
       const response:any = await request(app)
-      .post("/repositoryDetails")
+      .post("/tui.api/v1/repositoryDetails")
       .set({ Accept: 'application/json' })
       .send({  
       });
@@ -26,7 +26,7 @@ describe("Repository", () => {
 
     it("should check if valid username is given", async () => {
         const response:any = await request(app)
-        .post("/repositoryDetails")
+        .post("/tui.api/v1/repositoryDetails")
         .set({ Accept: 'application/json' })
         .send({
           userName: "Srkahlon"
@@ -37,7 +37,7 @@ describe("Repository", () => {
 
     it("should check if invalid username is given", async () => {
         const response:any = await request(app)
-        .post("/repositoryDetails")
+        .post("/tui.api/v1/repositoryDetails")
         .set({ Accept: 'application/json' })
         .send({
           userName: "notfoundusertest"
