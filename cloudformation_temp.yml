@@ -214,7 +214,6 @@ Resources:
     DependsOn: [PublicLoadBalancer,RestApi]
     Properties:
       HttpMethod: POST
-      OperationName: /repositoryDetails
       ResourceId: !GetAtt RestApi.RootResourceId
       RestApiId: !Ref RestApi
       AuthorizationType: NONE
