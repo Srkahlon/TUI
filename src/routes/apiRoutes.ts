@@ -16,7 +16,7 @@ export class Routes{
             RepositoryMiddleware.validateRequest,
             RepositoryController.getRepositoryDetails,
         ]);
-        this.app.post(`/`,[
+        this.app.get(`/`,[
             RepositoryController.commonMethod
         ]);
         return this.app;
