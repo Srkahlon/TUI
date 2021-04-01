@@ -47,6 +47,10 @@ Parameters:
   Subnet2:
     Type: String
     Default: subnet-c0badea4
+  Priority:
+    Type: Number
+    Default: 1
+    Description: Priority for the listener rule
 Resources:
   #Creating the ECR Repository
   ECRRepository:
@@ -178,7 +182,7 @@ Resources:
       Port: !Ref 'ContainerPort'
       Protocol: HTTP
       UnhealthyThresholdCount: 2
-      VpcId: !Ref 'VPC'
+      VpcId: vpc-2293055a
 
   # Create a rule on the load balancer for routing traffic to the target group
   LoadBalancerRule:
