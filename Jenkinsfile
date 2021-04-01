@@ -33,7 +33,7 @@ pipeline {
                     if(stack_exists == "false")
                     {
                         sh "aws cloudformation create-stack --stack-name ecs-stack --template-body file://cloudformation_temp.yml --region 'us-east-1' --parameters  ParameterKey=ImageURL,ParameterValue='${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${ECR_REPO_NAME}' --capabilities CAPABILITY_NAMED_IAM"
-                        sleep time: 60000, unit: 'MILLISECONDS'
+                        sleep time: 240000, unit: 'MILLISECONDS'
                     }
                     else
                     {
