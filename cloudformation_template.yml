@@ -33,7 +33,7 @@ Parameters:
   ImageURL:
     Type: String
   SecurityGroup:
-    Type: List<AWS::EC2::SecurityGroup::Id>
+    Type: CommaDelimitedList
   Subnet1:
     Type: String
     Default: subnet-82cf59c9
