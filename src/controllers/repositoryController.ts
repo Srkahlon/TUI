@@ -7,6 +7,21 @@ class RepositoryController {
     headers:any = {
         'Accept': 'application/vnd.github.v3+json'
     }
+
+    //Get the repository details for the username
+    commonMethod = async(req: express.Request, res: express.Response)=> {
+        try
+        {
+            res.status(200).send();
+        }
+        catch(e)
+        {
+            res.status(500).send({
+                status : 500,
+                Message: constObj.GENERAL_EXCEPTION
+            });
+        }
+    }
     //Get the repository details for the username
     getRepositoryDetails = async(req: express.Request, res: express.Response)=> {
         try
